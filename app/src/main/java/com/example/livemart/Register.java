@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -109,33 +110,18 @@ public class Register extends AppCompatActivity {
         // create new user or register new user
         mAuth
                 .createUserWithEmailAndPassword(Email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task)
-                    {
-                        if (task.isSuccessful()) {
-                            System.out.println(Email);
-                            System.out.println(user);
-                            System.out.println(Entity);
-                            System.out.println(password);
-                            saverFirebaseData();
-                        }
-                        else {
-
-                            // Registration failed
-//                            System.out.println(Email);
-//                            System.out.println(user);
-//                            System.out.println(Entity);
-//                            System.out.println(password);
-                            Toast.makeText(
-                                    getApplicationContext(),
-                                    "Registration failed!!"
-                                            + " Please try again later",
-                                    Toast.LENGTH_LONG)
-                                    .show();
-
-                        }
+                    public void onSuccess(AuthResult authResult) {
+                        System.out.println(Email);
+                        saverFirebaseData();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Register.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                        Log.v("error",e.getMessage());
                     }
                 });
     }
