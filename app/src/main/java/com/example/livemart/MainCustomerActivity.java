@@ -20,12 +20,14 @@ public class MainCustomerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_customer);
 
-        logoutBtn=findViewById(R.id.backBtn);
+        logoutBtn=findViewById(R.id.logoutBtn);
+
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mauth.signOut();
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                finish();
             }
         });
     }

@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                                     @NonNull Task<AuthResult> task)
                             {
                                 if (task.isSuccessful()) {
-                                    checkUserType();
+                                    startActivity(new Intent(getApplicationContext(),EmailVerifyActivity.class));
                                 }
 
                                 else {
@@ -180,33 +180,7 @@ public class LoginActivity extends AppCompatActivity {
         });;
     }
 
-    private void checkUserType()
-    {
-        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Users");
-        ref.orderByChild("uid").equalTo(mAuth.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds:snapshot.getChildren())
-                        {
-                            String accountType=""+ds.child("accountType").getValue();
-                            if(accountType.equalsIgnoreCase("retailer"))
-                            {
-                                startActivity(new Intent(getApplicationContext(),MainRetailerActivity.class));
-                            }
-                            else if(accountType.equalsIgnoreCase("customer"))
-                            {
-                                startActivity(new Intent(getApplicationContext(),MainCustomerActivity.class));
-                            }
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }
 //
 //    @Override
 //    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
