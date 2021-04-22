@@ -1,6 +1,7 @@
 package com.example.livemart;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,10 +13,19 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.internal.GoogleApiAvailabilityCache;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -33,12 +43,12 @@ public class LoginActivity extends AppCompatActivity {
     private Button Btn;
     private ProgressBar progressbar;
     private FirebaseAuth mAuth;
-//    private LoginButton fbButton;
-    private SignInButton googlebtn;
-    private static int SIGN_IN=1;
-    private GoogleApiClient googleApiClient;
+    private LoginButton fbButton;
+//    private SignInButton googlebtn;
+//    private static int SIGN_IN=1;
+//    private GoogleApiClient googleApiClient;
 
-//    CallbackManager callbackManager;
+    CallbackManager callbackManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         username = findViewById(R.id.emailEt);
         passwordText = findViewById(R.id.passwordEt);
         Btn = findViewById(R.id.loginBtn);
-//        fbButton=findViewById(R.id.fb_login);
+        fbButton=findViewById(R.id.fb_login);
 
         // Set on Click Listener on Sign-in button
         Btn.setOnClickListener(new View.OnClickListener() {
@@ -73,26 +83,26 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 //        Handling facebook login
-//        callbackManager = CallbackManager.Factory.create();
-//        fbButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                startActivity(new Intent(getApplicationContext(),MainDashboard.class));
-//                finish();
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//            }
-//
-//            @Override
-//            public void onError(FacebookException error) {
-//
-//            }
-//        });
+        callbackManager = CallbackManager.Factory.create();
+        fbButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                startActivity(new Intent(getApplicationContext(),MainRetailerActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
 
 
-//        //Handling google sign in
+        //Handling google sign in
 //        GoogleSignInOptions gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
 //        googleApiClient=new GoogleApiClient.Builder(this).enableAutoManage(this,this).addApi(Auth.GOOGLE_SIGN_IN_API,gso).build();
 //        googlebtn=findViewById(R.id.google_login);
@@ -107,20 +117,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 //        if(requestCode==SIGN_IN)
 //        {
 //            GoogleSignInResult result=Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 //            if(result.isSuccess())
 //            {
-//                startActivity(new Intent(getApplicationContext(),MainDashboard.class));
+//                startActivity(new Intent(getApplicationContext(),MainRetailerActivity.class));
 //                finish();
 //            }
 //        }
-//        callbackManager.onActivityResult(requestCode,resultCode,data);
-//    }
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+    }
 
 
     private void loginUserAccount()

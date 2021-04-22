@@ -11,14 +11,6 @@
         android:layout_height="80dp"
         android:padding="10dp"
         android:background="@drawable/shape_rect01">
-        <TextView
-            android:id="@+id/nameTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Retailer Dashboard"
-            android:layout_centerHorizontal="true"
-            android:textSize="24sp"
-            android:textStyle="bold"/>
         <ImageButton
             android:id="@+id/logoutBtn"
             android:layout_width="30dp"
@@ -26,6 +18,24 @@
             android:layout_alignParentEnd="true"
             android:background="@null"
             android:src="@drawable/ic_logout_black"/>
+
+        <TextView
+            android:id="@+id/shopNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shop Name"
+            android:layout_centerHorizontal="true"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+
+        <ImageButton
+            android:id="@+id/addProductBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@null"
+            android:src="@drawable/ic_baseline_add_shopping_cart_24"
+            android:layout_toStartOf="@id/logoutBtn"/>
+
 
     </RelativeLayout>
 
