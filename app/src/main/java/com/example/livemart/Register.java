@@ -72,11 +72,11 @@ public class Register extends AppCompatActivity {
 
         // Take the value of two edit texts in Strings
 
-        user = username.getText().toString();
-        password = passwordTextView.getText().toString();
-        retype=retypePassword.getText().toString();
-        Email=email.getText().toString();
-        Entity=entity.getText().toString();
+        user = username.getText().toString().trim();
+        password = passwordTextView.getText().toString().trim();
+        retype=retypePassword.getText().toString().trim();
+        Email=email.getText().toString().trim();
+        Entity=entity.getText().toString().trim();
 
         // Validations for input username and password
         if (user.isEmpty()) {

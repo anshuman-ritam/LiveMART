@@ -8,4 +8,11 @@ public class Constants {
             "Snacks",
             "Grocery"
     };
+    public static final String[] productCategories1 = {
+            "All",
+            "Vegetables",
+            "Fruits",
+            "Snacks",
+            "Grocery"
+    };
 }

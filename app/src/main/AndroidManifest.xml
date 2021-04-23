@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddProductActivity"></activity>
+        <activity android:name=".UserProductDetail"></activity>
+        <activity android:name=".AddProductActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -38,15 +39,25 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainWholesalerActivity" />
+        <activity android:name=".MainWholesalerActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
         <activity android:name=".EmailVerifyActivity" />
         <activity android:name=".MainCustomerActivity" />
         <activity android:name=".MainRetailerActivity">
-<!--        <intent-filter>-->
-<!--            <action android:name="android.intent.action.MAIN" />-->
 
-<!--            <category android:name="android.intent.category.LAUNCHER" />-->
-<!--        </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".Register" />
         <activity android:name=".LoginActivity" />

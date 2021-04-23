@@ -20,8 +20,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -123,27 +126,114 @@ public class AddProductActivity extends AppCompatActivity {
         hashMap.put("productDescription", ""+productDescription);
         hashMap.put("productCategory", ""+productCategory);
         hashMap.put("productPrice", ""+productPrice);
+        hashMap.put("productQuantity",""+productQuantity);
         hashMap.put("uid", ""+firebaseAuth.getUid());
+
+        //There should be two product dbs one for wholesaler and another for retailer
+
         //add to db
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(firebaseAuth.getUid()).child("Products").child(timestamp).setValue(hashMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Users");
+        ref.orderByChild("uid").equalTo(firebaseAuth.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        //added to db
-                        progressDialog.dismiss();
-                        Toast.makeText(AddProductActivity.this, "Product added", Toast.LENGTH_SHORT).show();
-                        clearData();
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot ds:snapshot.getChildren())
+                        {
+                            String accountType=""+ds.child("accountType").getValue();
+                            if(accountType.equalsIgnoreCase("retailer"))
+                            {
+                                ref.child(firebaseAuth.getUid()).child("Products").child(timestamp).setValue(hashMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //added to db
+                                                progressDialog.dismiss();
+                                                Toast.makeText(AddProductActivity.this, "Product added", Toast.LENGTH_SHORT).show();
+                                                clearData();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                //failed adding to db
+                                                progressDialog.dismiss();
+                                                Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                            else if(accountType.equalsIgnoreCase("wholesaler"))
+                            {
+                                ref.child(firebaseAuth.getUid()).child("WholesalerProducts").child(timestamp).setValue(hashMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //added to db
+                                                progressDialog.dismiss();
+                                                Toast.makeText(AddProductActivity.this, "Product added", Toast.LENGTH_SHORT).show();
+                                                clearData();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                //failed adding to db
+                                                progressDialog.dismiss();
+                                                Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                            else if(accountType.equalsIgnoreCase("customer"))
+                            {
+                                ref.child(firebaseAuth.getUid()).child("CustomerProducts").child(timestamp).setValue(hashMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //added to db
+                                                progressDialog.dismiss();
+                                                Toast.makeText(AddProductActivity.this, "Product added", Toast.LENGTH_SHORT).show();
+                                                clearData();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                //failed adding to db
+                                                progressDialog.dismiss();
+                                                Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+
+                        }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
+
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //failed adding to db
-                        progressDialog.dismiss();
-                        Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
+
+        //Bhamini code
+
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+//        reference.child(firebaseAuth.getUid()).child("Products").child(timestamp).setValue(hashMap)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        //added to db
+//                        progressDialog.dismiss();
+//                        Toast.makeText(AddProductActivity.this, "Product added", Toast.LENGTH_SHORT).show();
+//                        clearData();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        //failed adding to db
+//                        progressDialog.dismiss();
+//                        Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
     }
 
     private void clearData() {
