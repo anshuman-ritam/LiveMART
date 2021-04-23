@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -26,11 +27,12 @@ import java.util.ArrayList;
 public class UserProductDetail extends AppCompatActivity {
     // declare UI views
     private EditText userSearchProductEt;
-    private ImageButton userFilterProductBtn,addProductBtn;
+    private ImageButton userFilterProductBtn,addProductBtn,backBtn,logoutBtn;
     private RecyclerView userProdRv;
     private FirebaseAuth firebaseAuth;
     private ArrayList<ModelProduct> productsList;
     private AdapterProductUser adapterProductUser;
+    private TextView userFilteredProductsTv,tabProductTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,11 @@ public class UserProductDetail extends AppCompatActivity {
         userSearchProductEt = findViewById(R.id.userSearchProductEt);
         userProdRv = findViewById(R.id.userProdRv);
         addProductBtn = findViewById(R.id.addProductBtn);
-
+        userFilteredProductsTv=findViewById(R.id.userFilteredProductsTv);
         firebaseAuth = FirebaseAuth.getInstance();
+        tabProductTv=findViewById(R.id.tabProductTv);
+        backBtn=findViewById(R.id.backBtn);
+        logoutBtn=findViewById(R.id.logoutBtn);
 
         //loadMyInfo();
         //loadShopDetails();
@@ -80,6 +85,22 @@ public class UserProductDetail extends AppCompatActivity {
             public void onClick(View v) {
                 //open add product activity
                 startActivity(new Intent(getApplicationContext(),AddProductActivity.class));
+                finish();
+            }
+        });
+
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                finish();
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),MainCustomerActivity.class));
             }
         });
 
@@ -94,6 +115,7 @@ public class UserProductDetail extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 //get selected item
                                 String selected = Constants.productCategories1[which];
+                                userFilteredProductsTv.setText(selected);
                                 //userFilteredProductsTv.setText(selected); -------------BUT IT'S THERE IN XML
                                 if(selected.equals("All")) {
                                     //load all

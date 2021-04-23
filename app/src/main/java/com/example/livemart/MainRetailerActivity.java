@@ -94,6 +94,7 @@ public class MainRetailerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                finish();
             }
         });
 
@@ -102,6 +103,7 @@ public class MainRetailerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //open add product activity
                 startActivity(new Intent(getApplicationContext(),AddProductActivity.class));
+                finish();
             }
         });
 

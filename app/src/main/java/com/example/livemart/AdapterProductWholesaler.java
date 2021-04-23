@@ -1,16 +1,27 @@
 package com.example.livemart;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -47,6 +58,110 @@ public class AdapterProductWholesaler extends RecyclerView.Adapter<AdapterProduc
         holder.quantityTv.setText(quantity);
         holder.titleTv.setText(productTitle);
         holder.priceTv.setText("Rs. "+productPrice);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                detailsBottomSheet(modelProduct); //here modelProduct contains detail of clicked product
+            }
+        });
+    }
+
+
+    private void detailsBottomSheet(ModelProduct modelProduct) {
+        //bottom sheet
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+
+        View view = LayoutInflater.from(context).inflate(R.layout.bs_product_details_wholesaler, null);
+
+        bottomSheetDialog.setContentView(view);
+
+        ImageButton backBtn = view.findViewById(R.id.backBtn);
+        ImageButton deleteBtn = view.findViewById(R.id.deleteBtn);
+        ImageView productIconIv = view.findViewById(R.id.productIconIv);
+        TextView titleTv = view.findViewById(R.id.titleTv);
+        TextView descriptionTv = view.findViewById(R.id.descriptionTv);
+        TextView categoryTv = view.findViewById(R.id.categoryTv);
+        TextView quantityTv = view.findViewById(R.id.quantityTv);
+        TextView priceTv = view.findViewById(R.id.priceTv);
+
+
+        //getdata
+        String id = modelProduct.getProductId();
+        String uid = modelProduct.getUid();
+        String productCatergory = modelProduct.getProductCategory();
+        String productDescription = modelProduct.getProductDescription();
+        String quantity = modelProduct.getProductQuantity();
+        String title = modelProduct.getProductTitle();
+        String timestamp = modelProduct.getTimestamp();
+        String price = modelProduct.getProductPrice();
+
+        //set data
+        titleTv.setText(title);
+        descriptionTv.setText(productDescription);
+        categoryTv.setText(productCatergory);
+        quantityTv.setText(quantity);
+        priceTv.setText("Rs" + price);
+
+        //show dialog
+        bottomSheetDialog.show();
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+                //show delete confirm dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Delete")
+                        .setMessage("Are you sure you want to delete Product " + title + " ?")
+                        .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //deleted
+                                deleteProduct(id);
+                            }
+                        })
+                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //cancelled
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+                notifyDataSetChanged();
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //dismiss bottom sheet
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+    }
+
+    private void deleteProduct(String id) {
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(firebaseAuth.getUid()).child("WholesalerProducts").child(id).removeValue()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //deleted
+                        Toast.makeText(context, "Product Deleted...", Toast.LENGTH_SHORT).show();
+                        notifyDataSetChanged();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

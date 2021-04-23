@@ -29,7 +29,7 @@ public class MainWholesalerActivity extends AppCompatActivity {
 
     private FirebaseAuth mauth;
     private ImageButton logoutBtn,addProductBtn,filterproductsBtn;
-    private TextView shopNameTv,tabProductsTv,tabOrdersTv;
+    private TextView shopNameTv,tabProductsTv,tabOrdersTv,filteredProductsTv;
     private RelativeLayout productsRl,ordersRl;
     private EditText searchTv;
     private RecyclerView productsRv;
@@ -50,6 +50,7 @@ public class MainWholesalerActivity extends AppCompatActivity {
         searchTv=findViewById(R.id.searchProductEt);
         productsRv=findViewById(R.id.productsRv);
         filterproductsBtn=findViewById(R.id.filterProductBtn);
+        filteredProductsTv = findViewById(R.id.filteredProductsTv);
         productsRl=findViewById(R.id.productsRl);
         ordersRl=findViewById(R.id.ordersRl);
         mauth=FirebaseAuth.getInstance();
@@ -61,6 +62,7 @@ public class MainWholesalerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                finish();
             }
         });
 
@@ -69,6 +71,7 @@ public class MainWholesalerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //open add product activity
                 startActivity(new Intent(getApplicationContext(),AddProductActivity.class));
+                finish();
             }
         });
 
@@ -97,6 +100,7 @@ public class MainWholesalerActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String selected = Constants.productCategories1[which];
+                                filteredProductsTv.setText(selected);
                                 if(selected.equals("All")){
                                     loadAllProducts();
                                 }

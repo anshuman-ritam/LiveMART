@@ -65,8 +65,39 @@ public class AddProductActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),MainRetailerActivity.class));
-                finish();
+                DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Users");
+                ref.orderByChild("uid").equalTo(firebaseAuth.getUid())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for(DataSnapshot ds:snapshot.getChildren())
+                                {
+                                    String accountType=""+ds.child("accountType").getValue();
+                                    if(accountType.equalsIgnoreCase("retailer"))
+                                    {
+                                        startActivity(new Intent(getApplicationContext(),MainRetailerActivity.class));
+                                        finish();
+                                    }
+                                    else if(accountType.equalsIgnoreCase("wholesaler"))
+                                    {
+                                        startActivity(new Intent(getApplicationContext(),MainWholesalerActivity.class));
+                                        finish();
+                                    }
+                                    else if(accountType.equalsIgnoreCase("customer"))
+                                    {
+                                        startActivity(new Intent(getApplicationContext(),UserProductDetail.class));
+                                        finish();
+                                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
             }
         });
 
