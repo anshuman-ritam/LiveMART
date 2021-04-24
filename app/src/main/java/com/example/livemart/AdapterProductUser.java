@@ -94,17 +94,17 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
         String timestamp = modelProduct.getTimestamp();
         String price = modelProduct.getProductPrice();
 
-        cost = Double.parseDouble(price.replaceAll("$",""));
-        finalCost = Double.parseDouble(price.replaceAll("$",""));
+        cost = Double.parseDouble(price.replaceAll("Rs.", ""));
+        finalCost = Double.parseDouble(price.replaceAll("Rs.", ""));
         quant = 1;
 
         //dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(view);
-        titleTv.setText(""+title);
-        pQuantityTv.setText(""+quantity);
-        descriptionTv.setText(""+productDescription);
-        FinalTv.setText("Rs"+finalCost);
+        titleTv.setText("" + title);
+        pQuantityTv.setText("" + quantity);
+        descriptionTv.setText("" + productDescription);
+        FinalTv.setText("Rs" + finalCost);
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -112,17 +112,17 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
         incrementBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finalCost= finalCost+cost;
+                finalCost = finalCost + cost;
                 quant++;
 
-                FinalTv.setText("Rs"+finalCost);
-                quantityTv.setText(""+quant);
+                FinalTv.setText("Rs" + finalCost);
+                quantityTv.setText("" + quant);
             }
         });
         decrementBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quant>1) {
+                if (quant > 1) {
                     finalCost = finalCost - cost;
                     quant--;
 
@@ -136,57 +136,47 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
             public void onClick(View v) {
 
                 String title = titleTv.getText().toString().trim();
-                String price = FinalTv.getText().toString().trim().replace("Rs","");
+                String price = FinalTv.getText().toString().trim().replace("Rs", "");
                 String quantity = quantityTv.getText().toString().trim();
 
-                addToCart(productId,title,price,quantity);
+                addToCart(productId, title, price, quantity);
                 dialog.dismiss();
 
-            }
-            private int itemId = 1;
-            private void addToCart(String productId, String title, String price, String quantity) {
-                itemId++;
 
-                //EasyDB easyDB = EasyDB.init(context);
-                EasyDB easyDB=EasyDB.init(context,"ITEMS_DB")
-                .setTableName("ITEMS_TABLE")
-                        .addColumn(new Column("Item_Id", "text","unique"))
-                        .addColumn(new Column("Item_PID", "text","not null"))
-                        .addColumn(new Column("Item_Name", "text","not null"))
-                        .addColumn(new Column("Item_Price", "text","not null"))
-                        .addColumn(new Column("Item_Quantity", "text","not null"))
-                        .doneTableColumn();
-
-                Boolean b=easyDB.addData("Item_ID",itemId)
-                        .addData("Item_PID",productId)
-                        .addData("Item_Name",title)
-                        .addData("Item_Price",price)
-                        .addData("Item_Quantity",quantity)
-                        .doneDataAdding();
-                Toast.makeText(context,"Added to cart", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
+    private int itemId = 1;
+    private void addToCart(String productId, String title, String price, String quantity) {
+        itemId++;
+
+        //EasyDB easyDB = EasyDB.init(context);
+        EasyDB easyDB=EasyDB.init(context,"ITEMS_DB")
+                .setTableName("ITEMS_TABLE")
+                .addColumn(new Column("Item_Id", new String[]{"text","unique"}))
+                .addColumn(new Column("Item_PID", new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Name", new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Price", new String[]{"text","not null"}))
+                .addColumn(new Column("Item_Quantity", new String[]{"text","not null"}))
+                .doneTableColumn();
+//        easyDB.deleteAllDataFromTable();
+        Boolean b=easyDB.addData("Item_ID",itemId)
+                .addData("Item_PID",productId)
+                .addData("Item_Name",title)
+                .addData("Item_Price",price)
+                .addData("Item_Quantity",quantity)
+                .doneDataAdding();
+
+             /*   System.out.println(itemId);
+                System.out.println(productId);
+                System.out.println(title);
+                System.out.println(price);
+                System.out.println(quantity);
+*/
+
+        Toast.makeText(context,"Added to cart", Toast.LENGTH_SHORT).show();
+    }
 
 
     @Override

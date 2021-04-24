@@ -33,8 +33,8 @@ public class AddProductActivity extends AppCompatActivity {
     //ui views
     private ImageButton backBtn;
     private ImageView productIconIv;
-    private EditText titleEt, descriptionEt, quantityEt, priceEt;
-    private TextView categoryTv;
+    private EditText titleEt, descriptionEt, quantityEt, priceEt, availableEt;
+    private TextView categoryTv, stockTv;
     private Button addProductBtn;
 
     private FirebaseAuth firebaseAuth;
@@ -51,8 +51,10 @@ public class AddProductActivity extends AppCompatActivity {
         titleEt = findViewById(R.id.titleEt);
         descriptionEt = findViewById(R.id.descriptionEt);
         categoryTv = findViewById(R.id.categoryTv);
+        stockTv = findViewById(R.id.stockTv);
         quantityEt = findViewById(R.id.quantityEt);
         priceEt = findViewById(R.id.priceEt);
+        availableEt = findViewById(R.id.availableEt);
         addProductBtn = findViewById(R.id.addProductBtn);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -108,6 +110,13 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
+        stockTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stockDialog();
+            }
+        });
+
         addProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +126,7 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
-    private String productTitle, productDescription, productCategory, productQuantity, productPrice;
+    private String productTitle, productDescription, productCategory, productQuantity, productPrice, productStock, productAvailable;
 
     private void inputData() {
 
@@ -126,6 +135,8 @@ public class AddProductActivity extends AppCompatActivity {
         productCategory = categoryTv.getText().toString().trim();
         productQuantity = quantityEt.getText().toString().trim();
         productPrice = priceEt.getText().toString().trim();
+        productStock = stockTv.getText().toString().trim();
+        productAvailable = availableEt.getText().toString().trim();
 
         if(TextUtils.isEmpty(productTitle)) {
             Toast.makeText(this, "Title is required...", Toast.LENGTH_SHORT).show();
@@ -137,6 +148,14 @@ public class AddProductActivity extends AppCompatActivity {
         }
         if(TextUtils.isEmpty(productPrice)) {
             Toast.makeText(this, "Price is required...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(productStock)) {
+            Toast.makeText(this, "Stock detail is required...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(productAvailable)) {
+            Toast.makeText(this, "Availability Detail is required...", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -158,6 +177,8 @@ public class AddProductActivity extends AppCompatActivity {
         hashMap.put("productCategory", ""+productCategory);
         hashMap.put("productPrice", ""+productPrice);
         hashMap.put("productQuantity",""+productQuantity);
+        hashMap.put("productStock", ""+productStock);
+        hashMap.put("productAvailable", ""+productAvailable);
         hashMap.put("uid", ""+firebaseAuth.getUid());
 
         //There should be two product dbs one for wholesaler and another for retailer
@@ -274,6 +295,25 @@ public class AddProductActivity extends AppCompatActivity {
         categoryTv.setText("");
         quantityEt.setText("");
         priceEt.setText("");
+        stockTv.setText("");
+        availableEt.setText("");
+    }
+
+    private void stockDialog() {
+        String stockInfo[] = {
+                "In stock",
+                "Not in stock"
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Stock Details")
+                .setItems(stockInfo, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String stock = stockInfo[which];
+                        stockTv.setText(stock);
+                    }
+                })
+                .show();
     }
 
     private void categoryDialog() {

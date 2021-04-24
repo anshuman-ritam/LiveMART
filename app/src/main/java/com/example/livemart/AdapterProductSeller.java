@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 
 public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSeller.HolderProductSeller> implements Filterable {
@@ -61,6 +62,8 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         String title = modelProduct.getProductTitle();
         String timestamp = modelProduct.getTimestamp();
         String price = modelProduct.getProductPrice();
+        String stockDetails = modelProduct.getProductStock();
+        String stockAvailable = modelProduct.getProductAvailable();
 
         //For quantity
 
@@ -82,9 +85,11 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
 //                });
 
         holder.titleTv.setText(title);
-        holder.quantityTv.setText(quantity);
+        holder.quantityTv.setText("Quantity: "+quantity);
         holder.priceTv.setText("Rs. "+price);
         holder.titleTv.setText(title);
+        holder.stockTv.setText(stockDetails);
+        holder.availableTv.setText(stockAvailable);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +116,8 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         TextView categoryTv = view.findViewById(R.id.categoryTv);
         TextView quantityTv = view.findViewById(R.id.quantityTv);
         TextView priceTv = view.findViewById(R.id.priceTv);
+        TextView stockTv = view.findViewById(R.id.stockTv);
+        TextView availableTv = view.findViewById(R.id.availableTv);
 
 
         //getdata
@@ -122,13 +129,17 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         String title = modelProduct.getProductTitle();
         String timestamp = modelProduct.getTimestamp();
         String price = modelProduct.getProductPrice();
+        String stock = modelProduct.getProductStock();
+        String available = modelProduct.getProductAvailable();
 
         //set data
         titleTv.setText(title);
         descriptionTv.setText(productDescription);
         categoryTv.setText(productCatergory);
-        quantityTv.setText(quantity);
+        quantityTv.setText("Qty: "+quantity);
         priceTv.setText("Rs" + price);
+        stockTv.setText(stock);
+        availableTv.setText(available);
 
         //show dialog
         bottomSheetDialog.show();
@@ -205,10 +216,11 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
     }
 
     class HolderProductSeller extends RecyclerView.ViewHolder{
+
         //holds views of recyclerview
 
         private ImageView productIconIv;
-        private TextView titleTv, quantityTv, priceTv;
+        private TextView titleTv, quantityTv, priceTv, stockTv, availableTv;
 
         public HolderProductSeller(@NonNull View itemView) {
             super(itemView);
@@ -217,6 +229,8 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
             titleTv = itemView.findViewById(R.id.retailertitleTv);
             quantityTv = itemView.findViewById(R.id.retailer_quantityTv);
             priceTv = itemView.findViewById(R.id.retailer_priceTv);
+            stockTv = itemView.findViewById(R.id.retailer_stockTv);
+            availableTv = itemView.findViewById(R.id.retailer_availableTv);
 
         }
     }

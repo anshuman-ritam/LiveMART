@@ -18,7 +18,7 @@
             android:layout_marginEnd="5dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_baseline_add_purple"/>
+            android:src="@mipmap/ic_splash"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

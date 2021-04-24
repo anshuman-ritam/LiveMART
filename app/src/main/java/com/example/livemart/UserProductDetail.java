@@ -2,19 +2,25 @@ package com.example.livemart;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,16 +29,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import p32929.androideasysql_library.Column;
+import p32929.androideasysql_library.EasyDB;
 
 public class UserProductDetail extends AppCompatActivity {
     // declare UI views
     private EditText userSearchProductEt;
-    private ImageButton userFilterProductBtn,addProductBtn,backBtn,logoutBtn;
+    private ImageButton userFilterProductBtn,addProductBtn, CartBtn;
     private RecyclerView userProdRv;
     private FirebaseAuth firebaseAuth;
     private ArrayList<ModelProduct> productsList;
     private AdapterProductUser adapterProductUser;
-    private TextView userFilteredProductsTv,tabProductTv;
+
+    //cart
+    private ArrayList<ModelCartItem> cartItemList;
+    private AdapterCartItem adapterCartItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +57,8 @@ public class UserProductDetail extends AppCompatActivity {
         userSearchProductEt = findViewById(R.id.userSearchProductEt);
         userProdRv = findViewById(R.id.userProdRv);
         addProductBtn = findViewById(R.id.addProductBtn);
-        userFilteredProductsTv=findViewById(R.id.userFilteredProductsTv);
+        CartBtn = findViewById(R.id.CartBtn);
         firebaseAuth = FirebaseAuth.getInstance();
-        tabProductTv=findViewById(R.id.tabProductTv);
-        backBtn=findViewById(R.id.backBtn);
-        logoutBtn=findViewById(R.id.logoutBtn);
 
         //loadMyInfo();
         //loadShopDetails();
@@ -85,22 +95,14 @@ public class UserProductDetail extends AppCompatActivity {
             public void onClick(View v) {
                 //open add product activity
                 startActivity(new Intent(getApplicationContext(),AddProductActivity.class));
-                finish();
             }
         });
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        CartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-                finish();
-            }
-        });
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),MainCustomerActivity.class));
+                System.out.println("Opened");
+                showCartDialog();
             }
         });
 
@@ -115,7 +117,6 @@ public class UserProductDetail extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 //get selected item
                                 String selected = Constants.productCategories1[which];
-                                userFilteredProductsTv.setText(selected);
                                 //userFilteredProductsTv.setText(selected); -------------BUT IT'S THERE IN XML
                                 if(selected.equals("All")) {
                                     //load all
@@ -131,6 +132,94 @@ public class UserProductDetail extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    public double allTotalPrice = 0.00;
+    public TextView sTotalTv, dFeeTv, allTotalPriceTv;
+
+    public void showCartDialog() {
+
+        //init list
+        cartItemList = new ArrayList<>();
+
+        //inflate cart layout
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_cart, null);
+        //init views
+        RecyclerView cartItemsRv= view.findViewById(R.id.cartItemsRv);
+        //TextView sTotalLabelTv = view.findViewById(R.id.sTotalLabelTv);
+        sTotalTv = view.findViewById(R.id.sTotalTv);
+        //TextView dFeeLabelTv = view.findViewById(R.id.dFeeLabelTv);
+        dFeeTv = view.findViewById(R.id.dFeeTv);
+        allTotalPriceTv = view.findViewById(R.id.totalTv);
+        Button checkoutBtn = view.findViewById(R.id.checkoutBtn);
+
+        checkoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitOrder();
+                startActivity(new Intent(getApplicationContext(),MainCustomerActivity.class));
+            }
+        });
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //set view to dialog
+        builder.setView(view);
+
+        EasyDB easyDB=EasyDB.init(
+                this,"ITEMS_DB")
+                .setTableName("ITEMS_TABLE")
+                .addColumn(new Column("Item_Id", "text","unique"))
+                .addColumn(new Column("Item_PID", "text","not null"))
+                .addColumn(new Column("Item_Name", "text","not null"))
+                .addColumn(new Column("Item_Price", "text","not null"))
+                .addColumn(new Column("Item_Quantity", "text","not null"))
+                .doneTableColumn();
+
+        //easyDB.deleteAllDataFromTable();
+
+        //get all records from db
+        Cursor res = easyDB.getAllData();
+        while (res.moveToNext()){
+            String id = res.getString(1);
+            String pId = res.getString(2);
+            String name = res.getString(3);
+            String price = res.getString(4);
+            String quantity = res.getString(5);
+
+            System.out.println(id);
+            System.out.println(pId);
+            System.out.println(name);
+            System.out.println(price);
+            System.out.println(quantity);
+            allTotalPrice = allTotalPrice + Double.parseDouble(price);
+
+            ModelCartItem modelCartItem = new ModelCartItem(""+id,""+pId,""+name,""+price,""+quantity);
+
+            cartItemList.add(modelCartItem);
+        }
+
+        //setup adapter
+        adapterCartItem = new AdapterCartItem(this, cartItemList);
+        //set to recycler view
+        cartItemsRv.setAdapter(adapterCartItem);
+        sTotalTv.setText("Rs "+allTotalPrice);
+        dFeeTv.setText("Rs 12");
+        allTotalPriceTv.setText("Rs "+(allTotalPrice+12));
+        //show dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                allTotalPrice = 0.00;
+
+            }
+        });
+
+        //startActivity(new Intent(MainCustomerActivity.this,UserProductDetail.class));
+
     }
 
     private void loadFilteredProducts(String selected) {
@@ -211,6 +300,87 @@ public class UserProductDetail extends AppCompatActivity {
 
                     }
                 });
+
+
+    }
+
+    private void submitOrder() {
+
+        //show progress dialog
+//        progressDialog.setMessage("Placing Order.....");
+//        progressDialog.show();
+
+        //for order id and order time
+        String timestamp = ""+System.currentTimeMillis();
+
+        String cost = allTotalPriceTv.getText().toString().trim().replace("Rs", "");
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("OrderId",""+timestamp);
+        hashMap.put("OrderTime",""+timestamp);
+        hashMap.put("OrderStatus","In Progress");
+        hashMap.put("OrderCost",""+cost);
+        hashMap.put("OrderBy", ""+firebaseAuth.getUid());
+        hashMap.put("Order To","RPiznTPah6M3pTaagWPLRZ0lzpf1");
+
+        //add to db
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.orderByChild("uid").equalTo("RPiznTPah6M3pTaagWPLRZ0lzpf1")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ref.child("RPiznTPah6M3pTaagWPLRZ0lzpf1").child("Orders").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                //orderinfo added now add order items
+                                for (int i=0; i<cartItemList.size();i++){
+                                    String pId = cartItemList.get(i).getpId();
+                                    String id = cartItemList.get(i).getId();
+                                    String name = cartItemList.get(i).getName();
+                                    String price = cartItemList.get(i).getPrice();
+                                    String quantity = cartItemList.get(i).getQuantity();
+
+                                    HashMap<String,String> hashMap1 = new HashMap<>();
+                                    hashMap1.put("pId",pId);
+                                    hashMap1.put("pId",name);
+                                    hashMap1.put("price",price);
+                                    hashMap1.put("quantity",quantity);
+
+                                    ref.child("RPiznTPah6M3pTaagWPLRZ0lzpf1").child("Orders").child("Items").child(pId).setValue(hashMap1);
+
+
+                                }
+
+//                                progressDialog.dismiss();
+                                Toast.makeText(UserProductDetail.this, "Order Placed Successfully...", Toast.LENGTH_SHORT).show();
+
+                                //OPEN ORDER DETAILS
+                                Intent intent = new Intent(UserProductDetail.this,MapsActivity.class);
+//                                intent.putExtra("orderTo","RPiznTPah6M3pTaagWPLRZ0lzpf1");
+//                                intent.putExtra("orderId",timestamp);
+                                startActivity(intent);
+
+                            }
+                        })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        //failure placing order
+//                                        progressDialog.dismiss();
+                                        Toast.makeText(UserProductDetail.this, "e.getMessage()", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
 
 
     }

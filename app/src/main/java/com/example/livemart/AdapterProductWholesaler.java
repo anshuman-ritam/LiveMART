@@ -54,10 +54,14 @@ public class AdapterProductWholesaler extends RecyclerView.Adapter<AdapterProduc
         String productPrice=modelProduct.getProductPrice();
         String productTitle=modelProduct.getProductTitle();
         String quantity=modelProduct.getProductQuantity();
+        String stockDetails = modelProduct.getProductStock();
+        String stockAvailable = modelProduct.getProductAvailable();
 
-        holder.quantityTv.setText(quantity);
+        holder.quantityTv.setText("Quantity: "+quantity);
         holder.titleTv.setText(productTitle);
         holder.priceTv.setText("Rs. "+productPrice);
+        holder.stockTv.setText(stockDetails);
+        holder.availableTv.setText(stockAvailable);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +88,8 @@ public class AdapterProductWholesaler extends RecyclerView.Adapter<AdapterProduc
         TextView categoryTv = view.findViewById(R.id.categoryTv);
         TextView quantityTv = view.findViewById(R.id.quantityTv);
         TextView priceTv = view.findViewById(R.id.priceTv);
+        TextView stockTv = view.findViewById(R.id.stockTv);
+        TextView availableTv = view.findViewById(R.id.availableTv);
 
 
         //getdata
@@ -95,13 +101,17 @@ public class AdapterProductWholesaler extends RecyclerView.Adapter<AdapterProduc
         String title = modelProduct.getProductTitle();
         String timestamp = modelProduct.getTimestamp();
         String price = modelProduct.getProductPrice();
+        String stock = modelProduct.getProductStock();
+        String available = modelProduct.getProductAvailable();
 
         //set data
         titleTv.setText(title);
         descriptionTv.setText(productDescription);
         categoryTv.setText(productCatergory);
-        quantityTv.setText(quantity);
+        quantityTv.setText("Quantity: "+quantity);
         priceTv.setText("Rs" + price);
+        stockTv.setText(stock);
+        availableTv.setText(available);
 
         //show dialog
         bottomSheetDialog.show();
@@ -182,7 +192,7 @@ public class AdapterProductWholesaler extends RecyclerView.Adapter<AdapterProduc
     class HolderProductWholesaler extends RecyclerView.ViewHolder{
 
         private ImageView productIconTv;
-        private TextView titleTv,quantityTv,priceTv;
+        private TextView titleTv,quantityTv,priceTv, stockTv, availableTv;
 
         public HolderProductWholesaler(@NonNull View itemView) {
             super(itemView);
@@ -191,6 +201,8 @@ public class AdapterProductWholesaler extends RecyclerView.Adapter<AdapterProduc
             titleTv=itemView.findViewById(R.id.titleTv);
             quantityTv=itemView.findViewById(R.id.quantityTv);
             priceTv=itemView.findViewById(R.id.priceTv);
+            stockTv = itemView.findViewById(R.id.retailer_stockTv);
+            availableTv = itemView.findViewById(R.id.retailer_availableTv);
         }
     }
 }

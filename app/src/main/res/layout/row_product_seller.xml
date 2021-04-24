@@ -18,7 +18,7 @@
             android:layout_marginEnd="5dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_baseline_add_purple"/>
+            android:src="@mipmap/ic_splash"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,6 +48,30 @@
                 android:text="Rs 30"
                 android:textSize="20sp"
                 android:textColor="@color/black"/>
+
+            <RelativeLayout
+                android:id="@+id/stock_detailsRl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/retailer_stockTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text="In Stock"
+                    android:textColor="@color/purple_200"/>
+
+                <TextView
+                    android:id="@+id/retailer_availableTv"
+                    android:layout_toEndOf="@id/retailer_stockTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(Available Now)"
+                    android:textColor="@color/black"/>
+
+
+            </RelativeLayout>
 
         </LinearLayout>
 

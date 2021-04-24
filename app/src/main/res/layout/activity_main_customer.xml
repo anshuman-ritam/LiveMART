@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainRetailerActivity">
+    tools:context=".MainCustomerActivity">
 
     <RelativeLayout
         android:id="@+id/toolbarRl"
@@ -20,20 +20,36 @@
             android:background="@null"
             android:src="@drawable/ic_logout_black"/>
 
+        <Button
+            android:id="@+id/shoppingBtn"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="205dp"
+            android:minWidth="150dp"
+            android:layout_centerInParent="true"
+            android:text="Start Shopping" />
 
 
     </RelativeLayout>
+    <!-- Orders -->
+    <RelativeLayout
+        android:id="@+id/userOrderRl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarRl">
 
-    <Button
-        android:id="@+id/shoppingBtn"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbarRl"
-        android:layout_marginTop="205dp"
-        android:minWidth="150dp"
-        android:layout_centerInParent="true"
-        android:text="Start Shopping" />
+
+        <!--RecyclerView Show Categories-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userOrderRv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="23dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/now_order_user" />
+    </RelativeLayout>
+
+
 </RelativeLayout>
-
 

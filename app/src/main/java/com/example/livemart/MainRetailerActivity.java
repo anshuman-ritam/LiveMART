@@ -33,10 +33,13 @@ public class MainRetailerActivity extends AppCompatActivity {
     private EditText searchProductEt;
     private TextView shopNameTv, tabProductsTv, tabOrderTv, filteredProductsTv;
     private RelativeLayout productsRl, ordersRl;
-    private RecyclerView productsRv;
+    private RecyclerView productsRv,ordersRv;
 
     private ArrayList<ModelProduct> productList;
     private AdapterProductSeller adapterProductSeller;
+
+    private ArrayList<ModelOrderSeller> orderSellerArrayList;
+    private AdapterOrderSeller adapterOrderSeller;
 
 
     @Override
@@ -59,10 +62,29 @@ public class MainRetailerActivity extends AppCompatActivity {
         ordersRl = findViewById(R.id.ordersRl);
 
         productsRv = findViewById(R.id.productsRv);
+        ordersRv=findViewById(R.id.ordersRv);
 
         mauth = FirebaseAuth.getInstance();
 
+//        tabOrderTv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showOrdersUI();
+//                loadAllOrders();
+//            }
+//        });
+//
+//        tabProductsTv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showProductsUI();
+//                loadAllProducts();
+//            }
+//        });
+
         loadAllProducts();
+
+//        loadAllOrders();
         showProductsUI();
 
         //search
@@ -120,6 +142,7 @@ public class MainRetailerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //load orders
                 showOrdersUI();
+                loadAllOrders();
             }
         });
 
@@ -148,6 +171,40 @@ public class MainRetailerActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void loadAllOrders() {
+        orderSellerArrayList = new ArrayList<>();
+
+        //get all products
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child("RPiznTPah6M3pTaagWPLRZ0lzpf1").child("Orders")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        //before gettingreset lsit
+//                        orderSellerArrayList.clear();
+                        for(DataSnapshot ds: snapshot.getChildren()) {
+                            ModelOrderSeller modelOrderSeller= ds.getValue(ModelOrderSeller.class);
+
+//                            System.out.println(modelOrderSeller.getOrderId());
+//                            System.out.println(modelOrderSeller.getOrderCost());
+//                            System.out.println(modelOrderSeller.getOrderBy());
+
+                            orderSellerArrayList.add(modelOrderSeller);
+                        }
+
+                        //setup adapter
+                        adapterOrderSeller = new AdapterOrderSeller(MainRetailerActivity.this, orderSellerArrayList);
+                        //set adapter
+                        ordersRv.setAdapter(adapterOrderSeller);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void loadFilteredProducts(String selected) {

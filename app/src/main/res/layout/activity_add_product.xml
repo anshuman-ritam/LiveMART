@@ -111,6 +111,31 @@
             android:padding="10dp"
             android:layout_below="@id/quantityEt"/>
 
+        <TextView
+            android:id="@+id/stockTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="In Stock"
+            android:drawableStart="@drawable/ic_title_gray"
+            android:drawableEnd="@drawable/ic_title_gray"
+            android:drawablePadding="10dp"
+            android:inputType="textPersonName|textCapWords"
+            android:padding="10dp"
+            android:layout_below="@id/priceEt"/>
+
+        <EditText
+            android:id="@+id/availableEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="Availability"
+            android:drawableStart="@drawable/ic_title_gray"
+            android:drawablePadding="10dp"
+            android:inputType="textPersonName|textCapWords"
+            android:padding="10dp"
+            android:layout_below="@id/stockTv"/>
+
         <Button
             android:id="@+id/addProductBtn"
             android:text="Add Product"
@@ -119,7 +144,7 @@
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Button.Colored"
             android:minWidth="150dp"
-            android:layout_below="@id/priceEt"
+            android:layout_below="@id/availableEt"
             android:layout_marginTop="5dp"/>
 
 

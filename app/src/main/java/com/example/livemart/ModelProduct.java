@@ -1,20 +1,24 @@
 package com.example.livemart;
 
 public class ModelProduct {
-    private String productId, productTitle, productDescription, productQuantity, productCategory, productPrice, timestamp, uid;
+    private String productId, productTitle, productDescription,
+            productQuantity, productCategory, productPrice, productStock, productAvailable, timestamp, uid;
 
     public ModelProduct() {
 
     }
 
-    public ModelProduct(String productId, String productTitle, String productDescription, String productQuantity, String productCategory, String productPrice,
-                        String timestamp, String uid) {
+    public ModelProduct(String productId, String productTitle, String productDescription,
+                        String productQuantity, String productCategory, String productPrice, String productStock,
+                        String productAvailable, String timestamp, String uid) {
         this.productId = productId;
         this.productTitle = productTitle;
         this.productDescription = productDescription;
         this.productQuantity = productQuantity;
         this.productCategory = productCategory;
         this.productPrice = productPrice;
+        this.productStock = productStock;
+        this.productAvailable = productAvailable;
         this.timestamp = timestamp;
         this.uid = uid;
     }
@@ -66,6 +70,20 @@ public class ModelProduct {
     public void setProductPrice(String productPrice)  {
         this.productPrice = productPrice;
     }
+
+    public String getProductStock() {
+        return productStock;
+    }
+
+    public void setProductStock(String productStock)  {
+        this.productStock = productStock;
+    }
+
+    public String getProductAvailable() {
+        return productAvailable;
+    }
+
+    public void setProductAvailable(String productAvailable)  { this.productAvailable = productAvailable; }
 
     public String getTimestamp() {
         return timestamp;
