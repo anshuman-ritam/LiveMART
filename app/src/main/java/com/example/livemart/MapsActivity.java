@@ -117,10 +117,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnGetDirection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),MainCustomerActivity.class);
+//                Intent intent=new Intent(getApplicationContext(),MainCustomerActivity.class);
 //                intent.putExtra("orderTo",orderTo);
 //                intent.putExtra("orderId",orderId);
-                getApplicationContext().startActivity(intent);
+//                getApplicationContext().startActivity(intent);
+                startActivity(new Intent(getApplicationContext(),MainCustomerActivity.class));
             }
         });
 

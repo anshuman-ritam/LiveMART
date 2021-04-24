@@ -110,6 +110,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
 
         ImageButton backBtn = view.findViewById(R.id.backBtn);
         ImageButton deleteBtn = view.findViewById(R.id.deleteBtn);
+        ImageButton editBtn = view.findViewById(R.id.editBtn);
         ImageView productIconIv = view.findViewById(R.id.productIconIv);
         TextView titleTv = view.findViewById(R.id.titleTv);
         TextView descriptionTv = view.findViewById(R.id.descriptionTv);
@@ -168,6 +169,17 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
                         })
                         .show();
                 notifyDataSetChanged();
+            }
+        });
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+                //pass id of product
+                Intent intent = new Intent(context, EditProductActivity.class);
+                intent.putExtra("productId", id);
+                context.startActivity(intent);
             }
         });
 

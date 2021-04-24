@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".OrderDetailsSellerActivity"></activity>
+        <activity android:name=".EditProductActivity"></activity>
+        <activity android:name=".OrderDetailsWholesalerActivity" />
+        <activity android:name=".OrderDetailsSellerActivity" />
         <activity android:name=".UserProductDetail">
 
             <!-- <intent-filter> -->
@@ -26,6 +28,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBxBCm9EBpWpEkmA8FLrE1TJzcsvMYpoCQ" />
@@ -33,11 +36,13 @@
         <activity
             android:name=".MapsActivity2"
             android:label="Maps 2">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".MapsActivity"
