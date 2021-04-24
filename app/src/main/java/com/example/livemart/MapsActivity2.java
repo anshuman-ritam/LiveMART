@@ -2,6 +2,7 @@ package com.example.livemart;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -52,6 +53,9 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -79,7 +83,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
 
     MarkerOptions origin, destination;
-
+    private Button btnGetDirection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +106,18 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
         // Start downloading json data from Google Directions API
         downloadTask.execute(url);
+
+        btnGetDirection=findViewById(R.id.btnGetDirection);
+        btnGetDirection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent=new Intent(getApplicationContext(),MainCustomerActivity.class);
+//                intent.putExtra("orderTo",orderTo);
+//                intent.putExtra("orderId",orderId);
+//                getApplicationContext().startActivity(intent);
+                startActivity(new Intent(getApplicationContext(),MainRetailerActivity.class));
+            }
+        });
 
     }
 

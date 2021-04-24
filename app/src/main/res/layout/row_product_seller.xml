@@ -71,6 +71,7 @@
                     android:textColor="@color/black"/>
 
 
+
             </RelativeLayout>
 
         </LinearLayout>
@@ -85,6 +86,16 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:src="@drawable/ic_next" />
+
+        <TextView
+            android:id="@+id/addToCartTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add to cart"
+            android:drawableStart="@drawable/ic_baseline_add_shopping_cart_24"
+            android:gravity="center_vertical"
+            android:layout_toStartOf="@+id/nextIv"
+            android:textColor="@color/black"/>
 
     </RelativeLayout>
 

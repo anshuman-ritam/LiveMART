@@ -34,8 +34,15 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@null"
-            android:src="@drawable/ic_baseline_add_shopping_cart_24"
+            android:src="@drawable/ic_baseline_add_circle_24"
             android:layout_toStartOf="@id/logoutBtn"/>
+        <ImageButton
+            android:id="@+id/CartBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@null"
+            android:src="@drawable/ic_baseline_add_shopping_cart_24"
+            android:layout_toStartOf="@id/addProductBtn"/>
 
         <LinearLayout
             android:layout_below="@id/shopNameTv"
