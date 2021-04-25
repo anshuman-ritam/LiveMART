@@ -48,6 +48,14 @@
             android:text="In progress"
             android:textColor="@color/teal_200"
             tools:ignore="UnknownId" />
+        <ImageButton
+            android:id="@+id/writeReviewBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_toEndOf="@id/statusTv"
+            android:layout_below="@id/amountTv"
+            android:background="@null"
+            android:src="@drawable/ic_baseline_colorize_24"/>
         <ImageView
             android:id="@+id/nextIv"
             android:layout_width="wrap_content"

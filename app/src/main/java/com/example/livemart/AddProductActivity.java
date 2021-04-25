@@ -212,10 +212,46 @@ public class AddProductActivity extends AppCompatActivity {
                                                 Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                                             }
                                         });
+                                ref.child("HHhSO8YcYnOdn06qZaFPuZeXMc42").child("CustomerProducts").child(timestamp).setValue(hashMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //added to db
+                                                progressDialog.dismiss();
+                                                Toast.makeText(AddProductActivity.this, "Product added", Toast.LENGTH_SHORT).show();
+                                                clearData();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                //failed adding to db
+                                                progressDialog.dismiss();
+                                                Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                             }
                             else if(accountType.equalsIgnoreCase("wholesaler"))
                             {
                                 ref.child(firebaseAuth.getUid()).child("WholesalerProducts").child(timestamp).setValue(hashMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //added to db
+                                                progressDialog.dismiss();
+                                                Toast.makeText(AddProductActivity.this, "Product added", Toast.LENGTH_SHORT).show();
+                                                clearData();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                //failed adding to db
+                                                progressDialog.dismiss();
+                                                Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                ref.child("RPiznTPah6M3pTaagWPLRZ0lzpf1").child("Products").child(timestamp).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {

@@ -7,6 +7,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,7 +56,7 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Hold
 //        loadShopInfo(modelOrderUser, holder);
         //setData
         holder.amountTv.setText("Amount Rs:"+orderCost);
-        holder.statusTv.setText(orderStatus);
+        holder.statusTv.setText("In Progress");
         holder.orderIdTv.setText("OrderID:"+orderId);
         //change order status text color
 //        if(orderStatus.equals("In Progress")){
@@ -88,6 +89,13 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Hold
 
             }
         });
+
+        holder.writeReviewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context,WriteReviewActivity.class));
+            }
+        });
     }
 
    /* private void loadShopInfo(ModelOrderUser modelOrderUser, HolderOrderUser holder) {
@@ -117,6 +125,7 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Hold
 
         //views of layout
         private TextView orderIdTv,dateTv, shopNameTv, amountTv, statusTv;
+        private ImageButton writeReviewBtn;
 
         public HolderOrderUser(@NonNull View itemView){
             super(itemView);
@@ -126,6 +135,7 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Hold
             shopNameTv = itemView.findViewById(R.id.shopNameTv);
             amountTv = itemView.findViewById(R.id.amountTv);
             statusTv = itemView.findViewById(R.id.statusTv);
+            writeReviewBtn=itemView.findViewById(R.id.writeReviewBtn);
         }
     }
 

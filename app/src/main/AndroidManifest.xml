@@ -19,6 +19,8 @@
         <activity android:name=".EditProductActivity"></activity>
         <activity android:name=".OrderDetailsWholesalerActivity" />
         <activity android:name=".OrderDetailsSellerActivity" />
+        <activity android:name=".OrderDetailsUser"/>
+        <activity android:name=".WriteReviewActivity"/>
         <activity android:name=".UserProductDetail">
 
             <!-- <intent-filter> -->

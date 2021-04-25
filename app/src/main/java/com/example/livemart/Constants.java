@@ -6,13 +6,13 @@ public class Constants {
             "Vegetables",
             "Fruits",
             "Snacks",
-            "Grocery"
+            "Sweets"
     };
     public static final String[] productCategories1 = {
             "All",
             "Vegetables",
             "Fruits",
             "Snacks",
-            "Grocery"
+            "Sweets"
     };
 }
